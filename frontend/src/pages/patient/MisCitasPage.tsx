@@ -10,7 +10,7 @@ interface Props {
 }
 
 function isMoreThan24hAway(fecha: string, hora: string): boolean {
-  const slot = new Date(`${fecha}T${hora}:00`);
+  const slot = new Date(`${fecha}T${hora}`);
   return slot.getTime() - Date.now() > 24 * 60 * 60 * 1000;
 }
 
@@ -32,6 +32,7 @@ export function MisCitasPage({ onNueva }: Props) {
       .order('hora', { ascending: false });
     if (error) console.error(error);
     setCitas((data as Cita[]) ?? []);
+    console.log('CITAS RECIBIDAS:', data);
     setLoading(false);
   }, [profile]);
 
@@ -54,10 +55,10 @@ export function MisCitasPage({ onNueva }: Props) {
 
   const now = new Date();
   const proximas = citas
-    .filter((c) => c.estado !== 'cancelada' && new Date(`${c.fecha}T${c.hora}:00`) >= now)
+    .filter((c) => c.estado !== 'cancelada' && new Date(`${c.fecha}T${c.hora}`) >= now)
     .sort((a, b) => (a.fecha + a.hora).localeCompare(b.fecha + b.hora));
   const pasadas = citas
-    .filter((c) => c.estado === 'cancelada' || new Date(`${c.fecha}T${c.hora}:00`) < now)
+    .filter((c) => c.estado === 'cancelada' || new Date(`${c.fecha}T${c.hora}`) < now)
     .sort((a, b) => (b.fecha + b.hora).localeCompare(a.fecha + a.hora));
 
   if (loading) {
