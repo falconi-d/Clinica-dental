@@ -114,15 +114,15 @@ export function ConfirmPage({ tratamiento, fecha, hora, onBack, onDone }: Props)
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <div>
               <label className="label">Cédula</label>
-              <input required value={cedula} onChange={(e) => setCedula(e.target.value)} placeholder="000-000000-0" className="input" />
+              <input required value={cedula} onChange={(e) => setCedula(e.target.value.replace(/\D/g, "").slice(0, 10))} placeholder="1234567890" maxLength={10} inputMode="numeric" className="input" />
             </div>
             <div>
               <label className="label">Teléfono</label>
-              <input required value={telefono} onChange={(e) => setTelefono(e.target.value)} placeholder="+505 8888 8888" className="input" />
+              <input required value={telefono} onChange={(e) => setTelefono(e.target.value.replace(/\D/g, "").slice(0, 10))} placeholder="0999999999" maxLength={10} inputMode="numeric" className="input" />
             </div>
             <div className="sm:col-span-2">
               <label className="label">Dirección</label>
-              <input required value={direccion} onChange={(e) => setDireccion(e.target.value)} placeholder="Calle, número, ciudad" className="input" />
+              <input required value={direccion} onChange={(e) => setDireccion(e.target.value.slice(0, 60))} placeholder="Calle, numero, ciudad" maxLength={60} className="input" />
             </div>
           </div>
         </div>
@@ -133,7 +133,7 @@ export function ConfirmPage({ tratamiento, fecha, hora, onBack, onDone }: Props)
             <label className="label">Alergias o condiciones relevantes</label>
             <textarea
               value={alergias}
-              onChange={(e) => setAlergias(e.target.value)}
+              onChange={(e) => setAlergias(e.target.value.slice(0, 200))} maxLength={200}
               placeholder="Ej: alergia a la penicilina, diabetes, embarazo…"
               rows={3}
               className="input resize-none"
