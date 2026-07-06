@@ -81,7 +81,7 @@ export function SchedulePage({ tratamiento, onBack, onConfirm }: Props) {
     ]);
     if (citasRes.error) console.error(citasRes.error);
     if (blockedRes.error) console.error(blockedRes.error);
-    const taken = new Set<string>(((citasRes.data as Pick<Cita, 'hora'>[]) ?? []).map((r) => r.hora));
+    const taken = new Set<string>(((citasRes.data as Pick<Cita, 'hora'>[]) ?? []).map((r) => r.hora.slice(0, 5)));
     setTakenSlots(taken);
     setBlockedRanges((blockedRes.data as HorarioBloqueado[]) ?? []);
     setLoadingSlots(false);
