@@ -76,7 +76,7 @@ export function SchedulePage({ tratamiento, onBack, onConfirm }: Props) {
     setLoadingSlots(true);
     setSelectedSlot(null);
     const [citasRes, blockedRes] = await Promise.all([
-      supabase.from('citas').select('hora').eq('fecha', date).neq('estado', 'cancelada'),
+      supabase.rpc('horas_ocupadas', { p_fecha: date }),
       supabase.from('horarios_bloqueados').select('*').eq('fecha', date),
     ]);
     if (citasRes.error) console.error(citasRes.error);
