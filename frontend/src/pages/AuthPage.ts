@@ -63,8 +63,9 @@ export function AuthPage() {
             <Logo size="md" />
           </div>
           {mode === 'welcome' && <WelcomeCard onPick={setMode} />}
-          {mode === 'login' && <LoginForm onBack={() => setMode('welcome')} onSwitch={() => setMode('register')} onForgot={() => setMode('reset')} />}
-          {mode === 'register' && <RegisterForm onBack={() => setMode('welcome')} onSwitch={() => setMode('login')} />}          {mode === 'reset' && <ResetForm onBack={() => setMode('login')} />}
+          {mode === 'login' && <LoginForm onBack={() => setMode('welcome')} onSwitch={() => setMode('register')} />}
+          {mode === 'register' && <RegisterForm onBack={() => setMode('welcome')} onSwitch={() => setMode('login')} />}
+          {mode === 'reset' && <ResetForm onBack={() => setMode('login')} />}
         </div>
       </div>
     </div>
@@ -117,7 +118,7 @@ function WelcomeCard({ onPick }: { onPick: (m: Mode) => void }) {
   );
 }
 
-function LoginForm({ onBack, onSwitch, onForgot }: { onBack: () => void; onSwitch: () => void; onForgot: () => void }) {
+function LoginForm({ onBack, onSwitch }: { onBack: () => void; onSwitch: () => void }) {
   const { push } = useToast();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -177,10 +178,6 @@ function LoginForm({ onBack, onSwitch, onForgot }: { onBack: () => void; onSwitc
           {loading ? <Spinner /> : <>Entrar <ArrowRight size={18} /></>}
         </button>
       </form>
-
-      <p className="mt-4 text-center text-sm">
-        <button onClick={onForgot} className="font-semibold text-mint-600 hover:text-mint-700">¿Olvidaste tu contraseña?</button>
-      </p>
 
       <p className="mt-6 text-center text-sm text-ink-500">
         ¿No tienes cuenta?{' '}
@@ -283,74 +280,6 @@ function RegisterForm({ onBack, onSwitch }: { onBack: () => void; onSwitch: () =
           Inicia sesión
         </button>
       </p>
-    </div>
-  );
-}
-
-
-function ResetForm({ onBack }: { onBack: () => void }) {
-  const { push } = useToast();
-  const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [sent, setSent] = useState(false);
-
-  async function submit(e: FormEvent) {
-    e.preventDefault();
-    setLoading(true);
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: window.location.origin,
-    });
-    setLoading(false);
-    if (error) {
-      push('error', error.message);
-      return;
-    }
-    setSent(true);
-    push('success', 'Correo enviado');
-  }
-
-  if (sent) {
-    return (
-      <div className="card animate-scale-in text-center">
-        <div className="mx-auto mb-4 grid h-16 w-16 place-items-center rounded-full bg-mint-100 text-mint-600">
-          <Mail size={28} />
-        </div>
-        <h2 className="font-display text-2xl font-bold text-ink-800">Revisa tu correo</h2>
-        <p className="mt-2 text-ink-500">
-          Te enviamos un enlace a <strong>{email}</strong> para restablecer tu contraseña.
-        </p>
-        <button onClick={onBack} className="btn-secondary mt-6 w-full">Volver a iniciar sesión</button>
-      </div>
-    );
-  }
-
-  return (
-    <div className="card animate-scale-in">
-      <button onClick={onBack} className="mb-4 text-sm font-semibold text-ink-500 hover:text-ink-700">
-        ← Volver
-      </button>
-      <h2 className="font-display text-3xl font-bold text-ink-800">Recuperar contraseña</h2>
-      <p className="mt-2 text-ink-500">Te enviaremos un enlace para crear una nueva.</p>
-
-      <form onSubmit={submit} className="mt-6 space-y-4">
-        <div>
-          <label className="label">Correo electrónico</label>
-          <div className="relative">
-            <Mail size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-400" />
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="tu@correo.com"
-              className="input pl-10"
-            />
-          </div>
-        </div>
-        <button type="submit" disabled={loading} className="btn-primary w-full">
-          {loading ? <Spinner /> : <>Enviar enlace <ArrowRight size={18} /></>}
-        </button>
-      </form>
     </div>
   );
 }
