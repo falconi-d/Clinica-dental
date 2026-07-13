@@ -123,11 +123,12 @@ function LoginForm({ onBack, onSwitch, onForgot }: { onBack: () => void; onSwitc
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState('');
 
   async function submit(e: FormEvent) {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({ email, password, options: { captchaToken } });
     setLoading(false);
     if (error) {
       push('error', error.message);
@@ -174,7 +175,8 @@ function LoginForm({ onBack, onSwitch, onForgot }: { onBack: () => void; onSwitc
             />
           </div>
         </div>
-        <button type="submit" disabled={loading} className="btn-primary w-full">
+        <Turnstile siteKey="0x4AAAAAAD1Qfl_QVzDqPJ4X" onSuccess={setCaptchaToken} />
+        <button type="submit" disabled={loading || !captchaToken} className="btn-primary w-full">
           {loading ? <Spinner /> : <>Entrar <ArrowRight size={18} /></>}
         </button>
       </form>
