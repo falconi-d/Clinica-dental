@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { supabase } from '../lib/supabase';
+import { Turnstile } from '@marsidev/react-turnstile';
 import { useToast } from '../components/ui/Toast';
 import { Logo } from '../components/ui/Logo';
 import { Spinner } from '../components/ui/Spinner';
@@ -194,6 +195,7 @@ function LoginForm({ onBack, onSwitch, onForgot }: { onBack: () => void; onSwitc
 
 function RegisterForm({ onBack, onSwitch }: { onBack: () => void; onSwitch: () => void }) {
   const { push } = useToast();
+  const [captchaToken, setCaptchaToken] = useState('');
   const [nombre, setNombre] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -205,7 +207,7 @@ function RegisterForm({ onBack, onSwitch }: { onBack: () => void; onSwitch: () =
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { nombre, rol: 'paciente' } },
+      options: { data: { nombre, rol: 'paciente' }, captchaToken },
     });
     setLoading(false);
     if (error) {
@@ -272,7 +274,8 @@ function RegisterForm({ onBack, onSwitch }: { onBack: () => void; onSwitch: () =
           <Smile size={16} className="mt-0.5 shrink-0" />
           <p>Tu rol será <strong>paciente</strong> automáticamente. Podrás completar tus datos médicos después.</p>
         </div>
-        <button type="submit" disabled={loading} className="btn-primary w-full">
+        <Turnstile siteKey="0x4AAAAAAD1Qfl_QVzDqPJ4X" onSuccess={setCaptchaToken} />
+        <button type="submit" disabled={loading || !captchaToken} className="btn-primary w-full">
           {loading ? <Spinner /> : <>Crear cuenta <ArrowRight size={18} /></>}
         </button>
       </form>
@@ -284,6 +287,7 @@ function RegisterForm({ onBack, onSwitch }: { onBack: () => void; onSwitch: () =
         </button>
       </p>
     </div>
+
   );
 }
 
