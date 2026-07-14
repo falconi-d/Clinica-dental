@@ -175,7 +175,7 @@ function LoginForm({ onBack, onSwitch, onForgot }: { onBack: () => void; onSwitc
             />
           </div>
         </div>
-        <Turnstile siteKey="0x4AAAAAAD1Qfl_QVzDqPJ4X" onSuccess={setCaptchaToken} />
+        <Turnstile siteKey="0x4AAAAAAD2BgBgF0kgYbmFM" onSuccess={setCaptchaToken} />
         <button type="submit" disabled={loading || !captchaToken} className="btn-primary w-full">
           {loading ? <Spinner /> : <>Entrar <ArrowRight size={18} /></>}
         </button>
@@ -277,7 +277,7 @@ function RegisterForm({ onBack, onSwitch }: { onBack: () => void; onSwitch: () =
           <Smile size={16} className="mt-0.5 shrink-0" />
           <p>Tu rol será <strong>paciente</strong> automáticamente. Podrás completar tus datos médicos después.</p>
         </div>
-        <Turnstile siteKey="0x4AAAAAAD1Qfl_QVzDqPJ4X" onSuccess={setCaptchaToken} />
+        <Turnstile siteKey="0x4AAAAAAD2BgBgF0kgYbmFM" onSuccess={setCaptchaToken} />
         <button type="submit" disabled={loading || !captchaToken} className="btn-primary w-full">
           {loading ? <Spinner /> : <>Crear cuenta <ArrowRight size={18} /></>}
         </button>
