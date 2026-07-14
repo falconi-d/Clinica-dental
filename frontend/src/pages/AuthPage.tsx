@@ -154,7 +154,7 @@ function LoginForm({ onBack, onSwitch, onForgot }: { onBack: () => void; onSwitc
               type="email"
               required
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value.slice(0, 100))} maxLength={100}
               placeholder="tu@correo.com"
               className="input pl-10"
             />
@@ -237,7 +237,7 @@ function RegisterForm({ onBack, onSwitch }: { onBack: () => void; onSwitch: () =
             <input
               required
               value={nombre}
-              onChange={(e) => setNombre(e.target.value)}
+              onChange={(e) => setNombre(e.target.value.replace(/[^a-zA-ZÁÉÍÓÚáéíóúÑñ\s]/g, "").slice(0, 50))} maxLength={50}
               placeholder="Ana López"
               className="input pl-10"
             />
@@ -251,7 +251,7 @@ function RegisterForm({ onBack, onSwitch }: { onBack: () => void; onSwitch: () =
               type="email"
               required
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value.slice(0, 100))} maxLength={100}
               placeholder="tu@correo.com"
               className="input pl-10"
             />
@@ -264,10 +264,11 @@ function RegisterForm({ onBack, onSwitch }: { onBack: () => void; onSwitch: () =
             <input
               type="password"
               required
-              minLength={6}
+              minLength={8}
+              maxLength={64}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Mínimo 6 caracteres"
+              placeholder="Mínimo 8 caracteres"
               className="input pl-10"
             />
           </div>
@@ -347,7 +348,7 @@ function ResetForm({ onBack }: { onBack: () => void }) {
               type="email"
               required
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value.slice(0, 100))} maxLength={100}
               placeholder="tu@correo.com"
               className="input pl-10"
             />
