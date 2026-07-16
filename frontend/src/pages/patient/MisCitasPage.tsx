@@ -90,7 +90,7 @@ export function MisCitasPage({ onNueva }: Props) {
         ) : (
           <div className="grid gap-4 sm:grid-cols-2">
             {proximas.map((c) => (
-              <CitaCard key={c.id} cita={c} onCancel={cancelar} cancelling={cancellingId === c.id} canCancel={isMoreThan24hAway(c.fecha, c.hora)} />
+              <CitaCard key={c.id} cita={c} onCancel={cancelar} cancelling={cancellingId === c.id} canCancel={true} />
             ))}
           </div>
         )}
@@ -151,7 +151,7 @@ function CitaCard({
           <span className="chip bg-cream-100 text-ink-700">${Number(cita.tratamiento.precio).toFixed(2)}</span>
         )}
       </div>
-      {!past && canCancel && cita.estado !== 'cancelada' && (
+      {!past && cita.estado !== 'cancelada' && (
         <div className="mt-4 flex gap-2">
           <button onClick={() => onCancel(cita)} disabled={cancelling} className="btn-danger flex-1">
             {cancelling ? <Spinner size={16} /> : <><X size={16} /> Cancelar</>}
@@ -161,9 +161,7 @@ function CitaCard({
           </button>
         </div>
       )}
-      {!past && !canCancel && cita.estado !== 'cancelada' && (
-        <p className="mt-3 text-xs text-ink-400">Solo puedes cancelar hasta 24h antes de la cita.</p>
-      )}
+      
     </div>
   );
 }
