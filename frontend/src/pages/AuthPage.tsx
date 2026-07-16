@@ -299,6 +299,7 @@ function ResetForm({ onBack }: { onBack: () => void }) {
   const { push } = useToast();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState('');
   const [sent, setSent] = useState(false);
 
   async function submit(e: FormEvent) {
@@ -306,6 +307,7 @@ function ResetForm({ onBack }: { onBack: () => void }) {
     setLoading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: window.location.origin,
+      captchaToken,
     });
     setLoading(false);
     if (error) {
@@ -354,7 +356,8 @@ function ResetForm({ onBack }: { onBack: () => void }) {
             />
           </div>
         </div>
-        <button type="submit" disabled={loading} className="btn-primary w-full">
+        <Turnstile siteKey="0x4AAAAAAD2BgBgF0kgYbmFM" onSuccess={setCaptchaToken} />
+        <button type="submit" disabled={loading || !captchaToken} className="btn-primary w-full">
           {loading ? <Spinner /> : <>Enviar enlace <ArrowRight size={18} /></>}
         </button>
       </form>
