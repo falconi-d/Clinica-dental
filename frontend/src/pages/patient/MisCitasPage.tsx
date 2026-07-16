@@ -153,11 +153,8 @@ function CitaCard({
       </div>
       {!past && cita.estado !== 'cancelada' && (
         <div className="mt-4 flex gap-2">
-          <button onClick={() => onCancel(cita)} disabled={cancelling} className="btn-danger flex-1">
+          <button onClick={() => onCancel(cita)} disabled={cancelling} className="btn-danger w-full">
             {cancelling ? <Spinner size={16} /> : <><X size={16} /> Cancelar</>}
-          </button>
-          <button disabled className="btn-secondary flex-1 opacity-50 cursor-not-allowed">
-            <RotateCw size={16} /> Reprogramar
           </button>
         </div>
       )}
