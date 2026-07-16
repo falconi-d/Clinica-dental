@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { supabase, type Tratamiento } from '../../lib/supabase';
+import { validarCedulaEcuador, validarTelefonoEcuador } from '../../lib/validaciones';
 import { useAuth } from '../../lib/auth';
 import { useToast } from '../../components/ui/Toast';
 import { Spinner } from '../../components/ui/Spinner';
@@ -35,6 +36,16 @@ export function ConfirmPage({ tratamiento, fecha, hora, onBack, onDone }: Props)
   async function submit(e: FormEvent) {
     e.preventDefault();
     if (!profile) return;
+
+    if (!validarCedulaEcuador(cedula)) {
+      push('error', 'La cédula ingresada no es válida.');
+      return;
+    }
+    if (!validarTelefonoEcuador(telefono)) {
+      push('error', 'El teléfono ingresado no es válido (celular: 09XXXXXXXX, fijo: 0XXXXXXXX).');
+      return;
+    }
+
     setLoading(true);
 
     // 1. Update profile with billing/medical data

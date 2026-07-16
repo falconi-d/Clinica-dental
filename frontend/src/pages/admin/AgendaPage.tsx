@@ -1,4 +1,4 @@
-﻿import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { supabase, type Cita, type HorarioBloqueado, type Profile, type Tratamiento } from '../../lib/supabase';
 import { Spinner } from '../../components/ui/Spinner';
 import { useToast } from '../../components/ui/Toast';
@@ -6,7 +6,7 @@ import {
   ChevronLeft, ChevronRight, Calendar as CalendarIcon, Lock, X, User, Phone, MapPin, AlertTriangle, Trash2, Plus,
 } from 'lucide-react';
 
-const WEEKDAYS = ['Lun', 'Mar', 'MiÃ©', 'Jue', 'Vie', 'SÃ¡b', 'Dom'];
+const WEEKDAYS = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
 const MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 const SLOTS = ['09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30'];
 
@@ -86,7 +86,7 @@ export function AgendaPage() {
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-display text-3xl font-bold text-ink-800">Agenda general</h1>
-          <p className="mt-1 text-ink-500">Todas las citas de la clÃ­nica.</p>
+          <p className="mt-1 text-ink-500">Todas las citas de la clínica.</p>
         </div>
         <button onClick={() => setShowBlockModal(true)} className="btn-secondary">
           <Lock size={18} /> Bloquear horario
@@ -133,7 +133,7 @@ export function AgendaPage() {
             <h2 className="font-display text-lg font-bold text-ink-800">
               {selectedDate ? new Date(selectedDate + 'T00:00:00').toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' }) : ''}
             </h2>
-            <span className="text-sm text-ink-400">{citas.length} citas Â· {bloqueos.length} bloqueos</span>
+            <span className="text-sm text-ink-400">{citas.length} citas · {bloqueos.length} bloqueos</span>
           </div>
           {loading ? (
             <div className="grid place-items-center py-12"><Spinner size={24} className="text-mint-500" /></div>
@@ -221,21 +221,21 @@ function CitaDetailModal({
         <div className="flex items-start justify-between">
           <div>
             <h3 className="font-display text-xl font-bold text-ink-800">Detalle de cita</h3>
-            <p className="text-sm text-ink-500">{cita.fecha} Â· {cita.hora}</p>
+            <p className="text-sm text-ink-500">{cita.fecha} · {cita.hora}</p>
           </div>
           <button onClick={onClose} className="btn-ghost h-9 w-9 p-0"><X size={18} /></button>
         </div>
         <div className="mt-4 space-y-3">
           <div className="rounded-2xl bg-cream-50 p-4">
             <p className="flex items-center gap-2 font-semibold text-ink-800"><User size={16} className="text-mint-500" /> {p?.nombre}</p>
-            <p className="mt-2 flex items-center gap-2 text-sm text-ink-600"><Phone size={14} className="text-ink-400" /> {p?.telefono ?? 'â€”'}</p>
-            <p className="mt-1 flex items-center gap-2 text-sm text-ink-600"><MapPin size={14} className="text-ink-400" /> {p?.direccion ?? 'â€”'}</p>
-            <p className="mt-1 flex items-center gap-2 text-sm text-ink-600"><CalendarIcon size={14} className="text-ink-400" /> CÃ©dula: {p?.cedula ?? 'â€”'}</p>
+            <p className="mt-2 flex items-center gap-2 text-sm text-ink-600"><Phone size={14} className="text-ink-400" /> {p?.telefono ?? '—'}</p>
+            <p className="mt-1 flex items-center gap-2 text-sm text-ink-600"><MapPin size={14} className="text-ink-400" /> {p?.direccion ?? '—'}</p>
+            <p className="mt-1 flex items-center gap-2 text-sm text-ink-600"><CalendarIcon size={14} className="text-ink-400" /> Cédula: {p?.cedula ?? '—'}</p>
           </div>
           <div className="rounded-2xl bg-lilac-50 p-4">
             <p className="font-semibold text-ink-800">{cita.tratamiento?.nombre}</p>
             <p className="text-sm text-ink-500">{cita.tratamiento?.descripcion}</p>
-            <p className="mt-1 text-sm font-semibold text-lilac-700">${Number(cita.tratamiento?.precio ?? 0).toFixed(2)} Â· {cita.tratamiento?.duracion_minutos} min</p>
+            <p className="mt-1 text-sm font-semibold text-lilac-700">${Number(cita.tratamiento?.precio ?? 0).toFixed(2)} · {cita.tratamiento?.duracion_minutos} min</p>
           </div>
           <div className="rounded-2xl bg-amber-50 p-4 ring-1 ring-amber-200">
             <p className="flex items-center gap-2 text-sm font-semibold text-amber-700"><AlertTriangle size={16} /> Alergias / condiciones</p>

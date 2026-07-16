@@ -1,4 +1,4 @@
-﻿import { useEffect, useState, type FormEvent, type ChangeEvent } from 'react';
+import { useEffect, useState, type FormEvent, type ChangeEvent } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../lib/auth';
 import { useToast } from '../../components/ui/Toast';
@@ -15,7 +15,7 @@ export function ProfilePage() {
   const [direccion, setDireccion] = useState(profile?.direccion ?? '');
   const [alergias, setAlergias] = useState(profile?.alergias ?? '');
   const [loading, setLoading] = useState(false);
-  const [errores, setErrores] = useState<{ telefono?: string; cedula?: string }>({});
+  const [errores, setErrores] = useState<{ nombre?: string; telefono?: string; cedula?: string }>({});
 
   useEffect(() => {
     if (profile) {
@@ -51,7 +51,10 @@ export function ProfilePage() {
     e.preventDefault();
     if (!profile) return;
 
-    const nuevosErrores: { telefono?: string; cedula?: string } = {};
+    const nuevosErrores: { nombre?: string; telefono?: string; cedula?: string } = {};
+    if (!nombre.trim()) {
+      nuevosErrores.nombre = 'El nombre no puede estar vacío.';
+    }
     if (telefono && !validarTelefonoEcuador(telefono)) {
       nuevosErrores.telefono = 'Teléfono no válido (ej: 0912345678)';
     }
@@ -100,8 +103,9 @@ export function ProfilePage() {
             <label className="label">Nombre completo</label>
             <div className="relative">
               <User size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-400" />
-              <input value={nombre} onChange={handleNombreChange} maxLength={50} className="input pl-10" />
+              <input required value={nombre} onChange={handleNombreChange} maxLength={50} className="input pl-10" />
             </div>
+            {errores.nombre && <p className="mt-1 text-xs text-rose-600">{errores.nombre}</p>}
           </div>
           <div>
             <label className="label">Correo</label>
